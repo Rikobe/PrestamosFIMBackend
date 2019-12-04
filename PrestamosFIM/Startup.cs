@@ -14,6 +14,8 @@ using PrestamosFIM.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using MySql.Data.EntityFrameworkCore;
 using MySql.Data.EntityFrameworkCore.Extensions;
+using PrestamosFIM.Core;
+using PrestamosFIM.Infrastructure.Repository;
 
 namespace PrestamosFIM
 {
@@ -30,6 +32,10 @@ namespace PrestamosFIM
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<PrestamosFIMContext>(options => options.UseMySQL(Configuration.GetConnectionString("PrestamosFIMDatabase")));
+            services.AddScoped<DbContext, PrestamosFIMContext>();
+            services.AddTransient<IRepository<Activo>, Repository<Activo>>();
+            services.AddTransient<IRepository<Prestamo>, Repository<Prestamo>>();
+            services.AddTransient<IRepository<DetallePrestamo>, Repository<DetallePrestamo>>();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
