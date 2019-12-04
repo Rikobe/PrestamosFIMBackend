@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PrestamosFIM.Core;
+using PrestamosFIM.Core.Utils;
 using PrestamosFIM.Infrastructure;
 using PrestamosFIM.Infrastructure.Repository;
 
@@ -15,18 +16,20 @@ namespace PrestamosFIM.Controllers
     [ApiController]
     public class PrestamosController : ControllerBase
     {
-        private readonly IRepository<Prestamo> _repository;
+        private readonly IRepository<Prestamo> _prestamoRepository;
+        private readonly IRepository<DetallePrestamo> _detallePrestamoRepository; 
 
-        public PrestamosController(PrestamosFIMContext context)
+        public PrestamosController(IRepository<Prestamo> prestamoRepository, IRepository<DetallePrestamo> detallePrestamoRepository)
         {
-            _context = context;
+            _prestamoRepository = prestamoRepository;
+            _detallePrestamoRepository = detallePrestamoRepository;
         }
 
         // GET: api/Prestamos
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Prestamo>>> GetPrestamo()
+        public Wrapper<IEnumerable<Prestamo>> GetPrestamo()
         {
-            return await _context.Prestamo.ToListAsync();
+            
         }
 
         // GET: api/Prestamos/5
