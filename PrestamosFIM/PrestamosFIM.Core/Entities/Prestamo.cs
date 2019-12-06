@@ -1,10 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PrestamosFIM.Core
+namespace PrestamosFIM.PrestamosFIM.Core.Entities
 {
     public partial class Prestamo
     {
+        public Prestamo()
+        {
+            DetallePrestamo = new HashSet<DetallePrestamo>();
+        }
+
         public int IdPrestamo { get; set; }
         public string CicloEscolar { get; set; }
         public DateTime FechaPrestamo { get; set; }
@@ -15,5 +20,7 @@ namespace PrestamosFIM.Core
         public DateTime FechaEntrega { get; set; }
         public string TipoIdentificacion { get; set; }
         public string ResponsablePrestamo { get; set; }
+
+        public virtual ICollection<DetallePrestamo> DetallePrestamo { get; set; }
     }
 }

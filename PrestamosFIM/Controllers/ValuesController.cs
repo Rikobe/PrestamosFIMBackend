@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using PrestamosFIM.Core;
+using PrestamosFIM.Core.Entities;
 using PrestamosFIM.Core.Utils;
 using PrestamosFIM.Infrastructure;
 

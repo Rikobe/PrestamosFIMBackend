@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using PrestamosFIM.Core;
+using PrestamosFIM.Core.Entities;
 using PrestamosFIM.Core.Utils;
 using PrestamosFIM.Infrastructure;
 using PrestamosFIM.Infrastructure.Repository;

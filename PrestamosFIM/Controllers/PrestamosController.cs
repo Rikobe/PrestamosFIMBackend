@@ -5,10 +5,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using PrestamosFIM.Core;
+using PrestamosFIM.Core.Entities;
 using PrestamosFIM.Core.Utils;
 using PrestamosFIM.Infrastructure;
 using PrestamosFIM.Infrastructure.Repository;
+using Newtonsoft.Json;
 
 namespace PrestamosFIM.Controllers
 {
@@ -17,19 +18,48 @@ namespace PrestamosFIM.Controllers
     public class PrestamosController : ControllerBase
     {
         private readonly IRepository<Prestamo> _prestamoRepository;
-        private readonly IRepository<DetallePrestamo> _detallePrestamoRepository; 
+        private readonly IRepository<DetallePrestamo> _detallePrestamoRepository;
+        private readonly PrestamosFIMContext _context;
 
-        public PrestamosController(IRepository<Prestamo> prestamoRepository, IRepository<DetallePrestamo> detallePrestamoRepository)
+        public PrestamosController(IRepository<Prestamo> prestamoRepository, IRepository<DetallePrestamo> detallePrestamoRepository, PrestamosFIMContext context)
         {
             _prestamoRepository = prestamoRepository;
             _detallePrestamoRepository = detallePrestamoRepository;
+            _context = context;
         }
 
         // GET: api/Prestamos
         [HttpGet]
-        public Wrapper<IEnumerable<Prestamo>> GetPrestamo()
-        {
+        public IActionResult GetPrestamo()
+        {     
+            Wrapper<IList<Prestamo>> wrapper = new Wrapper<IList<Prestamo>>();
+            try
+            {
+                //var prestamos = _context.Prestamo.ToList();
+                //foreach (var prestamo in prestamos)
+                //{
+                //    var detalles = _context.DetallePrestamo.Where(dp => dp.IdPrestamo == prestamo.IdPrestamo).ToList();
+                //    prestamo.DetallePrestamo = detalles;
+                //}
+                //wrapper.Result = prestamos;
+                wrapper.Result = _prestamoRepository.GetAll().Include(dp => dp.DetallePrestamo).ToList();
+                //wrapper.Result = _prestamoRepository.GetAll().Include("DetallePrestamo").ToList();
+                wrapper.Success = true;
+            }
+            catch (Exception)
+            {
+
+                wrapper.Success =false;
+            }
+           // var prestamo = from p in _context.Prestamo
+                          // join d in _context
+      
+
             
+            //wrapper.Result = _prestamoRepository.GetAll().Include(dp => dp.DetallePrestamo);
+           // wrapper.Result = _detallePrestamoRepository.GetAll().Include(p => p.IdPrestamoNavigation);
+
+            return Ok(wrapper);
         }
 
         // GET: api/Prestamos/5

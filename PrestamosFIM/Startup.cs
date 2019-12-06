@@ -14,8 +14,9 @@ using PrestamosFIM.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using MySql.Data.EntityFrameworkCore;
 using MySql.Data.EntityFrameworkCore.Extensions;
-using PrestamosFIM.Core;
+using PrestamosFIM.Core.Entities;
 using PrestamosFIM.Infrastructure.Repository;
+using Newtonsoft.Json;
 
 namespace PrestamosFIM
 {
@@ -36,6 +37,9 @@ namespace PrestamosFIM
             services.AddTransient<IRepository<Activo>, Repository<Activo>>();
             services.AddTransient<IRepository<Prestamo>, Repository<Prestamo>>();
             services.AddTransient<IRepository<DetallePrestamo>, Repository<DetallePrestamo>>();
+            services.AddMvc().AddJsonOptions(options => {
+                options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+            });
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 

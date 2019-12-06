@@ -14,7 +14,6 @@ namespace PrestamosFIM.Infrastructure
         public PrestamosFIMContext(DbContextOptions<PrestamosFIMContext> options)
             : base(options)
         {
-           
         }
 
         public virtual DbSet<Activo> Activo { get; set; }
@@ -24,7 +23,7 @@ namespace PrestamosFIM.Infrastructure
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            
+
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -33,7 +32,7 @@ namespace PrestamosFIM.Infrastructure
 
             modelBuilder.Entity<Activo>(entity =>
             {
-                entity.HasKey(e => new { e.IdActivo, e.CodigoBarras });
+                entity.HasKey(e => e.IdActivo);
 
                 entity.ToTable("activo", "prestamosfim");
 
@@ -43,10 +42,10 @@ namespace PrestamosFIM.Infrastructure
 
                 entity.Property(e => e.IdActivo)
                     .HasColumnName("idActivo")
-                    .HasColumnType("int(11)")
-                    .ValueGeneratedOnAdd();
+                    .HasColumnType("int(11)");
 
                 entity.Property(e => e.CodigoBarras)
+                    .IsRequired()
                     .HasColumnName("codigoBarras")
                     .HasMaxLength(45)
                     .IsUnicode(false);
@@ -56,8 +55,6 @@ namespace PrestamosFIM.Infrastructure
                     .HasColumnName("nombreActivo")
                     .HasMaxLength(30)
                     .IsUnicode(false);
-
-
             });
 
             modelBuilder.Entity<DetallePrestamo>(entity =>
@@ -84,13 +81,17 @@ namespace PrestamosFIM.Infrastructure
                     .HasColumnName("idPrestamo")
                     .HasColumnType("int(11)");
 
+                entity.HasOne(d => d.IdActivoNavigation)
+                    .WithMany(p => p.DetallePrestamo)
+                    .HasForeignKey(d => d.IdActivo)
+                    .OnDelete(DeleteBehavior.ClientSetNull)
+                    .HasConstraintName("FK_Activo");
+
                 entity.HasOne(d => d.IdPrestamoNavigation)
                     .WithMany(p => p.DetallePrestamo)
                     .HasForeignKey(d => d.IdPrestamo)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Prestamo");
-
-                // entity.HasMany(a => a.IdActivoNavigation)
             });
 
             modelBuilder.Entity<Prestamo>(entity =>
