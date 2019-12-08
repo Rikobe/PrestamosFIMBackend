@@ -34,31 +34,16 @@ namespace PrestamosFIM.Controllers
         {     
             Wrapper<IList<Prestamo>> wrapper = new Wrapper<IList<Prestamo>>();
             try
-            {
-                //var prestamos = _context.Prestamo.ToList();
-                //foreach (var prestamo in prestamos)
-                //{
-                //    var detalles = _context.DetallePrestamo.Where(dp => dp.IdPrestamo == prestamo.IdPrestamo).ToList();
-                //    prestamo.DetallePrestamo = detalles;
-                //}
-                //wrapper.Result = prestamos;
-                wrapper.Result = _prestamoRepository.GetAll().Include(dp => dp.DetallePrestamo).ToList();
-                //wrapper.Result = _prestamoRepository.GetAll().Include("DetallePrestamo").ToList();
+            {     
+                wrapper.Result = _prestamoRepository.GetAll()
+                    .Include(dp => dp.DetallePrestamo)
+                    .ThenInclude(x => x.IdActivoNavigation).ToList();
                 wrapper.Success = true;
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
                 wrapper.Success =false;
             }
-           // var prestamo = from p in _context.Prestamo
-                          // join d in _context
-      
-
-            
-            //wrapper.Result = _prestamoRepository.GetAll().Include(dp => dp.DetallePrestamo);
-           // wrapper.Result = _detallePrestamoRepository.GetAll().Include(p => p.IdPrestamoNavigation);
-
             return Ok(wrapper);
         }
 

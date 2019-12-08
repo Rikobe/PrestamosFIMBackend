@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PrestamosFIM.PrestamosFIM.Core.Entities
+namespace PrestamosFIM.Core.Entities
 {
     public partial class Usuario
     {

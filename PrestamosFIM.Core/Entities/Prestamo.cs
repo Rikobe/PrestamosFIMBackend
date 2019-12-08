@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace PrestamosFIM.PrestamosFIM.Core.Entities
+namespace PrestamosFIM.Core.Entities
 {
     public partial class Prestamo
     {
@@ -20,7 +21,6 @@ namespace PrestamosFIM.PrestamosFIM.Core.Entities
         public DateTime FechaEntrega { get; set; }
         public string TipoIdentificacion { get; set; }
         public string ResponsablePrestamo { get; set; }
-
         public virtual ICollection<DetallePrestamo> DetallePrestamo { get; set; }
     }
 }
